@@ -1,25 +1,23 @@
 import {closePopup, openPopup} from './modal.js';
 import {likeTheCard, createCard, deleteCard} from './card.js';
-import {initialCards} from "./cards";
+import {initialCards} from './cards';
 
-export const cardsContainer = document.querySelector('.places__list');
-export const addCardPopup = document.querySelector('.popup_type_new-card');
-export const addCardWindowForm = addCardPopup.querySelector('.popup__form');
-
-
-export const profileEditBtn = document.querySelector('.profile__edit-button');
-export const profileEditPopup = document.querySelector('.popup_type_edit');
-export const addCardBtn = document.querySelector('.profile__add-button');
-export const formElement = profileEditPopup.querySelector('.popup__form');
-export const nameInput = formElement.querySelector('.popup__input_type_name');
-export const jobInput = formElement.querySelector('.popup__input_type_description');
+const cardsContainer = document.querySelector('.places__list');
+const addCardPopup = document.querySelector('.popup_type_new-card');
+const addCardWindowForm = addCardPopup.querySelector('.popup__form');
+const profileEditBtn = document.querySelector('.profile__edit-button');
+const profileEditPopup = document.querySelector('.popup_type_edit');
+const addCardBtn = document.querySelector('.profile__add-button');
+const formElement = profileEditPopup.querySelector('.popup__form');
+const nameInput = formElement.querySelector('.popup__input_type_name');
+const jobInput = formElement.querySelector('.popup__input_type_description');
 const profileName = document.querySelector('.profile__title');
 const profileJob = document.querySelector('.profile__description');
 const nameCard = document.querySelector('.popup__input_type_card-name');
 const linkToImg = document.querySelector('.popup__input_type_url');
 const popupTypeImage = document.querySelector('.popup_type_image');
 const popupImage = popupTypeImage.querySelector('.popup__image');
-const closeButtons = document.querySelectorAll('.popup__close');
+const popups = document.querySelectorAll('.popup');
 
 initialCards.forEach((card) => cardsContainer.append(createCard(card, deleteCard, likeTheCard, openImagePopup)));
 
@@ -41,7 +39,7 @@ function addUsersCards (evt) {
 
 // Добавил возможность редактирование информации профиля:
 
-function handleFormSubmit(evt) {
+function handleProfileFormSubmit(evt) {
     
     evt.preventDefault();
     profileName.textContent = nameInput.value;
@@ -72,11 +70,17 @@ profileEditBtn.addEventListener('mousedown', () => {
 addCardBtn.addEventListener('mousedown', () => {openPopup(addCardPopup)});
 
 // Вызовы функции закрытия попапов:
-closeButtons.forEach((button) => {
-    
-    const popup = button.closest('.popup');
-    button.addEventListener('click', () => closePopup(popup));
+popups.forEach((popup) => {
+    popup.addEventListener('mousedown', (evt) => {
+        if (evt.target.classList.contains('popup_is-opened')) {
+            closePopup(popup);
+        }
+
+        if (evt.target.classList.contains('popup__close')) {
+            closePopup(popup);
+        }
+    });
 });
 
-formElement.addEventListener('submit', handleFormSubmit);
+formElement.addEventListener('submit', handleProfileFormSubmit);
 addCardWindowForm.addEventListener('submit', addUsersCards);
