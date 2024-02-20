@@ -2,7 +2,7 @@ import {closePopup, openPopup} from './modal.js';
 import {addCardPopup, cardsContainer, cardTemplate, popupTypeImage} from './index.js';
 
 // Функция создания карточек:
-export function createCard(card, deleteCardEvent, cardLike, openImagePopup) {
+export function createCard(card, deleteCardEvent, likeTheCard, openImagePopup) {
     const cardElement = cardTemplate.cloneNode(true); // Клонирую содержимое карточки
     const deleteButton = cardElement.querySelector('.card__delete-button'); // Кнопка удаления
     const cardImage = cardElement.querySelector('.card__image'); // Картинки внутри карточек
@@ -15,7 +15,7 @@ export function createCard(card, deleteCardEvent, cardLike, openImagePopup) {
     deleteButton.addEventListener('click', deleteCardEvent); // Event вызывающий функцию удаления карточки
     cardImage.addEventListener('click', () => {openImagePopup(card.link, card.name)});
 
-    cardElement.querySelector('.card__like-button').addEventListener('click', (evt) => {cardLike(evt)});
+    cardElement.querySelector('.card__like-button').addEventListener('click', (evt) => {likeTheCard(evt)});
 
     return cardElement; // Возвращаю готовую карточку
 }
@@ -26,12 +26,12 @@ export function deleteCard() {
 }
 
 // функция лайка карточки:
-export function cardLike (evt) {
+export function likeTheCard (evt) {
     evt.target.classList.toggle('card__like-button_is-active');
 }
 
 // Добавление своих карточек:
-export function addUsersCards (evt) {
+/*export function addUsersCards (evt) {
     evt.preventDefault();
     
     const nameCard = document.querySelector('.popup__input_type_card-name');
@@ -41,14 +41,14 @@ export function addUsersCards (evt) {
         link: linkToImg.value
     }
 
-    const cardElement = createCard(card, deleteCard, cardLike, openImagePopup);
+    const cardElement = createCard(card, deleteCard, likeTheCard, openImagePopup);
 
     cardsContainer.prepend(cardElement);
 
     nameCard.value = '';
     linkToImg.value = '';
     closePopup(addCardPopup);
-}
+}*/
 
 // Функция открытия попапа с картинкой:
 export function openImagePopup (src, alt) {

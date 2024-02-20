@@ -1,9 +1,9 @@
 import {profileEditPopup, nameInput, jobInput} from './index.js';
-export {eventKeyEscape, openPopup, closePopup, handleFormSubmit, closePopupClickOverlay}
+export {closePopupTauchEscape, openPopup, closePopup, handleFormSubmit, closePopupClickOverlay}
 // Открытие и закрытие модальных окон:
 
 // Функция закрытия попапов при нажатии на escape:
-function eventKeyEscape (evt, popup) {
+function closePopupTauchEscape (evt, popup) {
     if (evt.key === 'Escape') {
         closePopup(popup);
     }
@@ -11,14 +11,14 @@ function eventKeyEscape (evt, popup) {
 
 // Функция открытия попапов:
 function openPopup (popup) {
-    document.addEventListener('keydown', (evt) => {eventKeyEscape(evt, popup)});
+    document.addEventListener('keydown', (evt) => {closePopupTauchEscape(evt, popup)});
     document.addEventListener('click', (evt) => {closePopupClickOverlay(evt, popup)});
     popup.classList.add('popup_is-opened');
 }
 
 // Функция закрытия попапов:
 function closePopup (popup) {
-    document.removeEventListener('keydown', (evt) => {eventKeyEscape(evt, popup)});
+    document.removeEventListener('keydown', (evt) => {closePopupTauchEscape(evt, popup)});
     document.removeEventListener('click', (evt) => {closePopupClickOverlay(evt, popup)});
     popup.classList.remove('popup_is-opened');
 }
