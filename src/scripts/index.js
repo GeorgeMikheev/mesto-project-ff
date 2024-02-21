@@ -17,6 +17,7 @@ const nameCard = document.querySelector('.popup__input_type_card-name');
 const linkToImg = document.querySelector('.popup__input_type_url');
 const popupTypeImage = document.querySelector('.popup_type_image');
 const popupImage = popupTypeImage.querySelector('.popup__image');
+const popupCaption = popupTypeImage.querySelector('.popup__caption');
 const popups = document.querySelectorAll('.popup');
 
 initialCards.forEach((card) => cardsContainer.append(createCard(card, deleteCard, likeTheCard, openImagePopup)));
@@ -53,7 +54,7 @@ function openImagePopup (src, alt) {
     
     popupImage.src = src;
     popupImage.alt = alt;
-    popupTypeImage.querySelector('.popup__caption').textContent = alt;
+    popupCaption.textContent = alt;
 
     openPopup(popupTypeImage);
 }
