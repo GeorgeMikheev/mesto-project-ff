@@ -1,6 +1,7 @@
 import {closePopup, openPopup} from './modal.js';
 import {likeTheCard, createCard, deleteCard} from './card.js';
-import {initialCards} from './cards';
+import {initialCards} from './cards.js';
+import {enableValidation, clearValidation} from './validation.js';
 
 const cardsContainer = document.querySelector('.places__list');
 const addCardPopup = document.querySelector('.popup_type_new-card');
@@ -85,3 +86,12 @@ popups.forEach((popup) => {
 
 formElement.addEventListener('submit', handleProfileFormSubmit);
 addCardWindowForm.addEventListener('submit', addUsersCards);
+
+enableValidation({
+    formSelector: '.popup__form',
+    inputSelector: '.popup__input',
+    submitButtonSelector: '.popup__button',
+    inactiveButtonClass: 'popup__button_disabled',
+    inputErrorClass: 'popup__input_type_error',
+    errorClass: 'popup__error_visible'
+  });

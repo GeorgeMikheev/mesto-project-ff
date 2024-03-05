@@ -1,17 +1,16 @@
 //todo Разобраться почему не стираются сообщения об ошибки после закрытия модальных окон
 
-import { setInterval } from "core-js";
-
-function enableValidation () {
-    const formList = Array.from(document.querySelectorAll('.popup__form'));
+export function enableValidation (dataValidation) {
+    const {formSelector, ...formConfig} = dataValidation; 
+    const formList = Array.from(document.querySelectorAll(formSelector));
 
     formList.forEach((formElement) => {
-        setEventListeners(formElement)
+        setEventListeners(formElement, formConfig)
     });
 }
 
 // Функция добавления класса ошибки:
-const showInputError = (formElement, inputElement, errorMassage) => {
+function showInputError (formElement, inputElement, errorMassage) {
     const formError = formElement.querySelector(`.${inputElement.id}-error`);
 
     inputElement.classList.add('form__input_type_error');
@@ -20,7 +19,7 @@ const showInputError = (formElement, inputElement, errorMassage) => {
 } 
 
 // Функция удаления класса ошибки:
-const hideInputError = (formElement, inputElement) => {
+function hideInputError (formElement, inputElement) {
     const formError = formElement.querySelector(`.${inputElement.id}-error`);
 
     inputElement.classList.remove('form__input_type_error');
@@ -28,23 +27,26 @@ const hideInputError = (formElement, inputElement) => {
     formError.classList.remove('form__input-error_active');
 }
 
-const hasInvalidInput = (inputList) => {
+function hasInvalidInput (inputList) {
     return inputList.some((inputElement) => {
         return !inputElement.validity.valid;
     });
 }
 
-const toggleButtonState = (inputList, buttonElement) => {
+function toggleButtonState (inputList, buttonElement, dataValidation) {
+    const {inactiveButtonClass} = dataValidation;
 
     if (hasInvalidInput(inputList)) {
         buttonElement.setAttribute('disabled', '');
+        buttonElement.classList.add(inactiveButtonClass);
     } else {
-        buttonElement.removeAttribute('disabled');        
+        buttonElement.removeAttribute('disabled');
+        buttonElement.classList.remove(inactiveButtonClass); 
     }
 }
 
 // Функция проверки валидности полей: !formInput.validity.valid
-const isValid = (formElement, inputElement) => {
+function isValid (formElement, inputElement) {
 
     if (inputElement.validity.patternMismatch) {
         inputElement.setCustomValidity(inputElement.dataset.errorMessage);
@@ -59,20 +61,30 @@ const isValid = (formElement, inputElement) => {
     }
 }
 
-function setEventListeners (formElement) {
-    const inputList = Array.from(formElement.querySelectorAll('.popup__input'));
-    const buttonElement = formElement.querySelector('.button');
+function setEventListeners (formElement, formConfig) {
+    const {inputSelector, submitButtonSelector, ...validationConfig} = formConfig;
+    const inputList = Array.from(formElement.querySelectorAll(inputSelector));
+    const buttonElement = formElement.querySelector(submitButtonSelector);
 
-    toggleButtonState(inputList, buttonElement);
+    toggleButtonState(inputList, buttonElement, validationConfig);
 
     inputList.forEach((inputElement) => {
         inputElement.addEventListener('input', () => {
             isValid(formElement, inputElement);
-            toggleButtonState(inputList, buttonElement);
+            toggleButtonState(inputList, buttonElement, validationConfig);
         });
     });
 }
 
-//todo поместить внутрь вызова функции объект который принимает все нужные функциям классы и селекторы элементов как объект настроек.
-//? Понять для чего это нужно.
-enableValidation(); 
+export function clearValidation (formElement, validationConfig) {
+    const {inputSelector, submitButtonSelector} = validationConfig;
+    const inputList = Array.from(formElement.querySelectorAll(inputSelector));
+    const buttonElement = formElement.querySelector(submitButtonSelector);
+
+    inputList.forEach((inputElement) => {
+        hideInputError(formElement, inputElement);
+    });
+
+    toggleButtonState(inputList, buttonElement);
+    buttonElement.setAttribute('disabled', '');
+} //? Где ее вызывать?
