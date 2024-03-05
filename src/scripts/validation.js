@@ -46,6 +46,12 @@ const toggleButtonState = (inputList, buttonElement) => {
 // Функция проверки валидности полей: !formInput.validity.valid
 const isValid = (formElement, inputElement) => {
 
+    if (inputElement.validity.patternMismatch) {
+        inputElement.setCustomValidity(inputElement.dataset.errorMessage);
+    } else {
+        inputElement.setCustomValidity('');
+    }
+
     if (!inputElement.validity.valid) {
         showInputError(formElement, inputElement, inputElement.validationMessage);
     } else {
@@ -67,4 +73,6 @@ function setEventListeners (formElement) {
     });
 }
 
-enableValidation();
+//todo поместить внутрь вызова функции объект который принимает все нужные функциям классы и селекторы элементов как объект настроек.
+//? Понять для чего это нужно.
+enableValidation(); 
