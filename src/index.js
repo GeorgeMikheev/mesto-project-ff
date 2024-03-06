@@ -1,6 +1,7 @@
 import './pages/index.css'; 
 import './scripts/index.js';
 import './scripts/validation.js';
+import './scripts/api.js';
 
 const addIcon = new URL('./images/add-icon.svg', import.meta.url);
 const avatar = new URL('./images/avatar.jpg', import.meta.url);

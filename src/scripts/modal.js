@@ -1,20 +1,22 @@
+import {clearValidation} from './validation.js';
+
 // Функция открытия попапов:
-export function openPopup (popup) {
-    document.addEventListener('keydown', closePopupTouchEscape);
-    popup.classList.add('popup_is-opened');
+export function openPopup(popup) {
+  document.addEventListener("keydown", closePopupTouchEscape);
+  popup.classList.add("popup_is-opened");
 }
 
 // Функция закрытия попапов:
-export function closePopup (popup) {
-    document.removeEventListener('keydown', closePopupTouchEscape);
-    popup.classList.remove('popup_is-opened');
+export function closePopup(popup) {
+  document.removeEventListener("keydown", closePopupTouchEscape);
+  popup.classList.remove("popup_is-opened");
+  clearValidation();
 }
 
 // Функция закрытия попапов при нажатии на escape:
-function closePopupTouchEscape (evt) {
-    
-    if (evt.key === 'Escape') {
-        const openPopup = document.querySelector('.popup_is-opened');
-        closePopup(openPopup);
-    }
+function closePopupTouchEscape(evt) {
+  if (evt.key === "Escape") {
+    const openPopup = document.querySelector(".popup_is-opened");
+    closePopup(openPopup);
+  }
 }

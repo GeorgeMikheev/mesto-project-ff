@@ -46,7 +46,7 @@
           placeholder="Имя"
           minlength="2"
           maxlength="40"
-          pattern="^[a-zA-Zа-яА-ЯёЁ\-\s]+$"
+          pattern="^[a-zA-Zа-яА-ЯёЁ\-]+(\s[a-zA-Zа-яА-ЯёЁ\-]+)*$"
           data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
           required
         >
@@ -79,7 +79,7 @@
           placeholder="Название"
           minlength="2"
           maxlength="30"
-          pattern="[a-zA-Z]"
+          pattern="^[a-zA-Zа-яА-ЯёЁ\-]+(\s[a-zA-Zа-яА-ЯёЁ\-]+)*$"
           data-error-message="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы"
           required
         >
