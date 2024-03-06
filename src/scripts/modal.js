@@ -10,7 +10,6 @@ export function openPopup(popup) {
 export function closePopup(popup) {
   document.removeEventListener("keydown", closePopupTouchEscape);
   popup.classList.remove("popup_is-opened");
-  clearValidation();
 }
 
 // Функция закрытия попапов при нажатии на escape:

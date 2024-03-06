@@ -1,3 +1,5 @@
+import { getUsersProfile, getCards } from "./api.js";
+
 const cardTemplate = document.querySelector("#card-template").content;
 
 // Функция создания карточек:

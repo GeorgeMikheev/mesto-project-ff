@@ -1,7 +1,7 @@
 //todo Разобраться почему не стираются сообщения об ошибки после закрытия модальных окон
 
-export function enableValidation(dataValidation) {
-  const { formSelector, ...formConfig } = dataValidation;
+export function enableValidation(validationConfig) {
+  const { formSelector, ...formConfig } = validationConfig;
   const formList = Array.from(document.querySelectorAll(formSelector));
 
   formList.forEach((formElement) => {
@@ -33,8 +33,8 @@ function hasInvalidInput(inputList) {
   });
 }
 
-function toggleButtonState(inputList, buttonElement, dataValidation) {
-  const { inactiveButtonClass } = dataValidation;
+function toggleButtonState(inputList, buttonElement, validationConfig) {
+  const { inactiveButtonClass } = validationConfig;
 
   if (hasInvalidInput(inputList)) {
     buttonElement.setAttribute("disabled", "");
@@ -85,6 +85,6 @@ export function clearValidation(formElement, validationConfig) {
     hideInputError(formElement, inputElement);
   });
 
-  toggleButtonState(inputList, buttonElement);
+  toggleButtonState(inputList, buttonElement, validationConfig);
   buttonElement.setAttribute("disabled", "");
 } //? Где ее вызывать?

@@ -20,6 +20,14 @@ const popupTypeImage = document.querySelector(".popup_type_image");
 const popupImage = popupTypeImage.querySelector(".popup__image");
 const popupCaption = popupTypeImage.querySelector(".popup__caption");
 const popups = document.querySelectorAll(".popup");
+const validationConfig = {
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__button",
+  inactiveButtonClass: "popup__button_disabled",
+  inputErrorClass: "popup__input_type_error",
+  errorClass: "popup__error_visible",
+}
 
 initialCards.forEach((card) =>
   cardsContainer.append(
@@ -66,10 +74,12 @@ profileEditBtn.addEventListener("mousedown", () => {
   nameInput.value = profileName.textContent;
   jobInput.value = profileJob.textContent;
   openPopup(profileEditPopup);
+  clearValidation(profileEditPopup, validationConfig);
 });
 
 addCardBtn.addEventListener("mousedown", () => {
   openPopup(addCardPopup);
+  clearValidation(profileEditPopup, validationConfig);
 });
 
 // Вызовы функции закрытия попапов:
@@ -88,11 +98,4 @@ popups.forEach((popup) => {
 formElement.addEventListener("submit", handleProfileFormSubmit);
 addCardWindowForm.addEventListener("submit", addUsersCards);
 
-enableValidation({
-  formSelector: ".popup__form",
-  inputSelector: ".popup__input",
-  submitButtonSelector: ".popup__button",
-  inactiveButtonClass: "popup__button_disabled",
-  inputErrorClass: "popup__input_type_error",
-  errorClass: "popup__error_visible",
-});
+enableValidation(validationConfig);
