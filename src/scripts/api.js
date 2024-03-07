@@ -19,11 +19,13 @@ export function getCards(card, image) {
     .then((res) => res.json())
     .then((result) => {
       console.log(result);
-      
-      image.src = card.link;
-      image.alt = card.name;
-      card.querySelector(".card__title").textContent = card.name;
 
-      return cardElement; // Возвращаю готовую карточку
+      result.forEach((res) => {
+        image.src = card.link;
+        image.alt = card.name;
+        card.querySelector(".card__title").textContent = card.name;
+      });
+
+      return card; // Возвращаю готовую карточку
     });
 }
