@@ -10,13 +10,11 @@ export function createCard(
   openImagePopupFunc
 ) {
   const cardElement = cardTemplate.cloneNode(true); // Клонирую содержимое карточки
-  const deleteButton = cardElement.querySelector(".card__delete-button"); // Кнопка удаления
   const cardImage = cardElement.querySelector(".card__image"); // Картинки внутри карточек
+  const deleteButton = cardElement.querySelector(".card__delete-button"); // Кнопка удаления
 
   // Добавляю данные из cards.js:
-  cardImage.src = card.link;
-  cardImage.alt = card.name;
-  cardElement.querySelector(".card__title").textContent = card.name;
+  getCards(cardElement, cardImage);
 
   deleteButton.addEventListener("mousedown", deleteCardEvent); // Event вызывающий функцию удаления карточки
   cardImage.addEventListener("mousedown", () => {
@@ -28,8 +26,6 @@ export function createCard(
     .addEventListener("mousedown", (evt) => {
       likeTheCardFunc(evt);
     });
-
-  return cardElement; // Возвращаю готовую карточку
 }
 
 // Функция удаления карточки:
