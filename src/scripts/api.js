@@ -1,31 +1,29 @@
-export function getUsersProfile() {
-  fetch("https://nomoreparties.co/v1/wff-cohort-7/users/me", {
-    headers: {
-      authorization: "c412049b-d37a-453a-a5bc-6533d1f9c86a",
-    },
+const config = {
+  url: "https://nomoreparties.co/v1/wff-cohort-11/",
+  headers: {
+    authorization: "cb84c739-4986-447f-b45b-898c907879fa",
+  }
+};
+
+export async function getUsersProfiles() {
+  const response = await fetch(`${config.url}users/me`, {
+    headers: config.headers,
   })
-    .then((res) => res.json())
-    .then((result) => {
-      console.log(result);
-    });
+  
+  return response;
 }
 
-export function getCards(card, image) {
-  fetch("https://nomoreparties.co/v1/wff-cohort-7/cards", {
-    headers: {
-      authorization: "c412049b-d37a-453a-a5bc-6533d1f9c86a",
-    },
-  })
-    .then((res) => res.json())
-    .then((result) => {
-      console.log(result);
+export async function getCards() {
+  const response = await fetch(`${config.url}cards`, {
+    headers: config.headers,
+  });
 
-      result.forEach((res) => {
-        image.src = card.link;
-        image.alt = card.name;
-        card.querySelector(".card__title").textContent = card.name;
-      });
-
-      return card; // Возвращаю готовую карточку
-    });
+  return response;
 }
+
+const promises = [getCards(), getUsersProfiles()]
+
+Promise.all(promises)
+  .then(res => res.json())
+  .then(res => console.log(res))
+  // .then(data => console.log(data))

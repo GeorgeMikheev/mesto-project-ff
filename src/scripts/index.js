@@ -1,7 +1,8 @@
 import { closePopup, openPopup } from "./modal.js";
 import { likeTheCard, createCard, deleteCard } from "./card.js";
-import { initialCards } from "./cards.js";
 import { enableValidation, clearValidation } from "./validation.js";
+import { getCards } from "./api.js";
+import { data } from "autoprefixer";
 
 const cardsContainer = document.querySelector(".places__list");
 const addCardPopup = document.querySelector(".popup_type_new-card");
@@ -26,14 +27,23 @@ const validationConfig = {
   submitButtonSelector: ".popup__button",
   inactiveButtonClass: "popup__button_disabled",
   inputErrorClass: "popup__input_type_error",
-  errorClass: "popup__error_visible",
-}
+  errorClass: "popup__error_visible"
+};
 
-initialCards.forEach((card) =>
-  cardsContainer.append(
-    createCard(card, deleteCard, likeTheCard, openImagePopup)
-  )
-);
+// getCards()
+//   .then(res => {
+//     if(res.ok) {
+//       return res.json();
+//     } else {
+//       return Promise.reject(`Error: ${res.status}`)
+//     }
+//   })
+//   .then(data => {
+//     data.forEach(card => {
+//       cardsContainer.append(createCard(card, deleteCard, likeTheCard, openImagePopup))
+//     })
+//   })
+//   .catch(err => alert(err));
 
 // Функция добавления своих карточек:
 function addUsersCards(evt) {
@@ -74,12 +84,10 @@ profileEditBtn.addEventListener("mousedown", () => {
   nameInput.value = profileName.textContent;
   jobInput.value = profileJob.textContent;
   openPopup(profileEditPopup);
-  clearValidation(profileEditPopup, validationConfig);
 });
 
 addCardBtn.addEventListener("mousedown", () => {
   openPopup(addCardPopup);
-  clearValidation(profileEditPopup, validationConfig);
 });
 
 // Вызовы функции закрытия попапов:
@@ -87,10 +95,12 @@ popups.forEach((popup) => {
   popup.addEventListener("mousedown", (evt) => {
     if (evt.target.classList.contains("popup_is-opened")) {
       closePopup(popup);
+      clearValidation(popup, validationConfig);
     }
 
     if (evt.target.classList.contains("popup__close")) {
       closePopup(popup);
+      clearValidation(popup, validationConfig);
     }
   });
 });

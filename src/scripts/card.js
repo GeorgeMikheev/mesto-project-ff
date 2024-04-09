@@ -1,5 +1,3 @@
-import { getUsersProfile, getCards } from "./api.js";
-
 const cardTemplate = document.querySelector("#card-template").content;
 
 // Функция создания карточек:
@@ -10,11 +8,12 @@ export function createCard(
   openImagePopupFunc
 ) {
   const cardElement = cardTemplate.cloneNode(true); // Клонирую содержимое карточки
-  const cardImage = cardElement.querySelector(".card__image"); // Картинки внутри карточек
   const deleteButton = cardElement.querySelector(".card__delete-button"); // Кнопка удаления
+  const cardImage = cardElement.querySelector(".card__image"); // Картинки внутри карточек
 
-  // Добавляю данные из cards.js:
-  getCards(cardElement, cardImage);
+  cardImage.src = card.link;
+  cardImage.alt = card.name;
+  cardElement.querySelector(".card__title").textContent = card.name;
 
   deleteButton.addEventListener("mousedown", deleteCardEvent); // Event вызывающий функцию удаления карточки
   cardImage.addEventListener("mousedown", () => {
@@ -26,6 +25,8 @@ export function createCard(
     .addEventListener("mousedown", (evt) => {
       likeTheCardFunc(evt);
     });
+
+  return cardElement; // Возвращаю готовую карточку
 }
 
 // Функция удаления карточки:

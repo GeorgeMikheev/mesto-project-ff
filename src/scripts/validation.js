@@ -1,5 +1,3 @@
-//todo Разобраться почему не стираются сообщения об ошибки после закрытия модальных окон
-
 export function enableValidation(validationConfig) {
   const { formSelector, ...formConfig } = validationConfig;
   const formList = Array.from(document.querySelectorAll(formSelector));
@@ -45,7 +43,7 @@ function toggleButtonState(inputList, buttonElement, validationConfig) {
   }
 }
 
-// Функция проверки валидности полей: !formInput.validity.valid
+// Функция проверки валидности полей:
 function isValid(formElement, inputElement) {
   if (inputElement.validity.patternMismatch) {
     inputElement.setCustomValidity(inputElement.dataset.errorMessage);
@@ -61,8 +59,7 @@ function isValid(formElement, inputElement) {
 }
 
 function setEventListeners(formElement, formConfig) {
-  const { inputSelector, submitButtonSelector, ...validationConfig } =
-    formConfig;
+  const { inputSelector, submitButtonSelector, ...validationConfig } = formConfig;
   const inputList = Array.from(formElement.querySelectorAll(inputSelector));
   const buttonElement = formElement.querySelector(submitButtonSelector);
 
@@ -87,4 +84,4 @@ export function clearValidation(formElement, validationConfig) {
 
   toggleButtonState(inputList, buttonElement, validationConfig);
   buttonElement.setAttribute("disabled", "");
-} //? Где ее вызывать?
+}

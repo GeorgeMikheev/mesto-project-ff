@@ -1,5 +1,3 @@
-import {clearValidation} from './validation.js';
-
 // Функция открытия попапов:
 export function openPopup(popup) {
   document.addEventListener("keydown", closePopupTouchEscape);
