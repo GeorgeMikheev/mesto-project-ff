@@ -1,8 +1,8 @@
 import { closePopup, openPopup } from "./modal.js";
-import { likeTheCard, createCard, deleteCard } from "./card.js";
+import { likeTheCard, createCard, deleteCard, likes } from "./card.js";
 import { enableValidation, clearValidation } from "./validation.js";
-import { getCards } from "./api.js";
-import { data } from "autoprefixer";
+import { getCards, getUsersProfiles, sendingProfileData, addNewCard } from "./api.js";
+
 
 const cardsContainer = document.querySelector(".places__list");
 const addCardPopup = document.querySelector(".popup_type_new-card");
@@ -30,29 +30,26 @@ const validationConfig = {
   errorClass: "popup__error_visible"
 };
 
-// getCards()
-//   .then(res => {
-//     if(res.ok) {
-//       return res.json();
-//     } else {
-//       return Promise.reject(`Error: ${res.status}`)
-//     }
-//   })
-//   .then(data => {
-//     data.forEach(card => {
-//       cardsContainer.append(createCard(card, deleteCard, likeTheCard, openImagePopup))
-//     })
-//   })
-//   .catch(err => alert(err));
+const promises = [getCards(), getUsersProfiles()]
+
+
+// Добавление карточек с сервера:
+Promise.all(promises)
+  .then(([cards, usersProfiles]) => {
+    profileName.textContent = usersProfiles.name;
+    profileJob.textContent = usersProfiles.about;
+
+    cards.forEach((card) => {
+      likes.textContent = card.likes.length;
+      cardsContainer.append(createCard(card, deleteCard, likeTheCard, openImagePopup, usersProfiles._id));
+    })
+  })
+  .catch(err => console.log(err));
 
 // Функция добавления своих карточек:
 function addUsersCards(evt) {
   evt.preventDefault();
-  const card = {
-    name: nameCard.value,
-    link: linkToImg.value,
-  };
-
+  const card = addNewCard(nameCard.value, linkToImg.value);
   const cardElement = createCard(card, deleteCard, likeTheCard, openImagePopup);
   cardsContainer.prepend(cardElement);
 
@@ -64,6 +61,7 @@ function addUsersCards(evt) {
 
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
+  sendingProfileData(nameInput.value, jobInput.value)
   profileName.textContent = nameInput.value;
   profileJob.textContent = jobInput.value;
   evt.target.reset();
@@ -75,7 +73,6 @@ function openImagePopup(src, alt) {
   popupImage.src = src;
   popupImage.alt = alt;
   popupCaption.textContent = alt;
-
   openPopup(popupTypeImage);
 }
 
@@ -84,10 +81,12 @@ profileEditBtn.addEventListener("mousedown", () => {
   nameInput.value = profileName.textContent;
   jobInput.value = profileJob.textContent;
   openPopup(profileEditPopup);
+  clearValidation(profileEditPopup, validationConfig);
 });
 
 addCardBtn.addEventListener("mousedown", () => {
   openPopup(addCardPopup);
+  clearValidation(addCardPopup, validationConfig);
 });
 
 // Вызовы функции закрытия попапов:
@@ -95,12 +94,10 @@ popups.forEach((popup) => {
   popup.addEventListener("mousedown", (evt) => {
     if (evt.target.classList.contains("popup_is-opened")) {
       closePopup(popup);
-      clearValidation(popup, validationConfig);
     }
 
     if (evt.target.classList.contains("popup__close")) {
       closePopup(popup);
-      clearValidation(popup, validationConfig);
     }
   });
 });
