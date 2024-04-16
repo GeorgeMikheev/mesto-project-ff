@@ -1,7 +1,12 @@
 import { closePopup, openPopup } from "./modal.js";
-import { likeTheCard, createCard, deleteCard, likes } from "./card.js";
+import { likeTheCard, createCard, deleteCard } from "./card.js";
 import { enableValidation, clearValidation } from "./validation.js";
-import { getCards, getUsersProfiles, sendingProfileData, addNewCard } from "./api.js";
+import { getCards, 
+  getUsersProfiles, 
+  sendingProfileData, 
+  addNewCard,
+  returnCardID
+} from "./api.js";
 
 
 const cardsContainer = document.querySelector(".places__list");
@@ -20,6 +25,8 @@ const linkToImg = document.querySelector(".popup__input_type_url");
 const popupTypeImage = document.querySelector(".popup_type_image");
 const popupImage = popupTypeImage.querySelector(".popup__image");
 const popupCaption = popupTypeImage.querySelector(".popup__caption");
+const deleteCardPopup = document.querySelector('.popup_type_delete_card');
+const deleteCardPopupBtn = deleteCardPopup.querySelector('.popup__button');
 const popups = document.querySelectorAll(".popup");
 const validationConfig = {
   formSelector: ".popup__form",
@@ -30,18 +37,18 @@ const validationConfig = {
   errorClass: "popup__error_visible"
 };
 
-const promises = [getCards(), getUsersProfiles()]
-
+let userID = '';
+const promises = [getCards(), getUsersProfiles()];
 
 // Добавление карточек с сервера:
 Promise.all(promises)
   .then(([cards, usersProfiles]) => {
     profileName.textContent = usersProfiles.name;
     profileJob.textContent = usersProfiles.about;
+    userID = usersProfiles._id;
 
     cards.forEach((card) => {
-      likes.textContent = card.likes.length;
-      cardsContainer.append(createCard(card, deleteCard, likeTheCard, openImagePopup, usersProfiles._id));
+      cardsContainer.append(createCard(card, openedDeletePopup, likeTheCard, openImagePopup, userID));
     })
   })
   .catch(err => console.log(err));
@@ -49,9 +56,13 @@ Promise.all(promises)
 // Функция добавления своих карточек:
 function addUsersCards(evt) {
   evt.preventDefault();
-  const card = addNewCard(nameCard.value, linkToImg.value);
-  const cardElement = createCard(card, deleteCard, likeTheCard, openImagePopup);
-  cardsContainer.prepend(cardElement);
+
+  addNewCard(nameCard.value, linkToImg.value)
+    .then(res => {
+      const cardElement = createCard(res, openedDeletePopup, likeTheCard, openImagePopup, userID);
+      cardsContainer.prepend(cardElement);
+    })
+    .catch(err => console.log(err));
 
   evt.target.reset();
   closePopup(addCardPopup);
@@ -74,6 +85,12 @@ function openImagePopup(src, alt) {
   popupImage.alt = alt;
   popupCaption.textContent = alt;
   openPopup(popupTypeImage);
+}
+
+// Функци открытия попапа удаления карточки:
+function openedDeletePopup(cardID) {
+  openPopup(deleteCardPopup);
+  deleteCardPopupBtn.addEventListener('mousedown', () => deleteCard(returnCardID(cardID), closePopup, deleteCardPopup));
 }
 
 // Вызовы функции открытия попапов:

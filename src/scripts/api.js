@@ -44,7 +44,7 @@ export function getCards() {
 }
 
 export function addNewCard(cardName, cardLink) {
-  fetch(`${config.url}cards`, {
+  return fetch(`${config.url}cards`, {
     method: 'POST',
     headers: {
       authorization: config.headers.authorization,
@@ -54,5 +54,27 @@ export function addNewCard(cardName, cardLink) {
       name: cardName,
       link: cardLink
     })
-  })
+  }).then(res => {
+    if(res.ok) {
+      return res.json();
+    }      
+    
+    return Promise.reject(`Error ${res.status}`);
+  });
+}
+
+export function returnCardID(cardID) {
+  return fetch(`${config.url}cards/${cardID}`, {
+    method: 'DELETE',
+    headers: {
+      authorization: config.headers.authorization,
+      'Content-Type': 'application/json'
+    }
+  }).then(res => {
+    if(res.ok) {
+      return res.json();
+    }      
+    
+    return Promise.reject(`Error ${res.status}`);
+  });
 }
