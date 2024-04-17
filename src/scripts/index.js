@@ -4,10 +4,8 @@ import { enableValidation, clearValidation } from "./validation.js";
 import { getCards, 
   getUsersProfiles, 
   sendingProfileData, 
-  addNewCard,
-  returnCardID
+  addNewCard
 } from "./api.js";
-
 
 const cardsContainer = document.querySelector(".places__list");
 const addCardPopup = document.querySelector(".popup_type_new-card");
@@ -48,7 +46,7 @@ Promise.all(promises)
     userID = usersProfiles._id;
 
     cards.forEach((card) => {
-      cardsContainer.append(createCard(card, openedDeletePopup, likeTheCard, openImagePopup, userID));
+      cardsContainer.append(createCard(card, openeDeletePopup, likeTheCard, openImagePopup, userID));
     })
   })
   .catch(err => console.log(err));
@@ -59,7 +57,7 @@ function addUsersCards(evt) {
 
   addNewCard(nameCard.value, linkToImg.value)
     .then(res => {
-      const cardElement = createCard(res, openedDeletePopup, likeTheCard, openImagePopup, userID);
+      const cardElement = createCard(res, openeDeletePopup, likeTheCard, openImagePopup, userID);
       cardsContainer.prepend(cardElement);
     })
     .catch(err => console.log(err));
@@ -88,9 +86,9 @@ function openImagePopup(src, alt) {
 }
 
 // Функци открытия попапа удаления карточки:
-function openedDeletePopup(cardID) {
+function openeDeletePopup(card) {
   openPopup(deleteCardPopup);
-  deleteCardPopupBtn.addEventListener('mousedown', () => deleteCard(returnCardID(cardID), closePopup, deleteCardPopup));
+  deleteCardPopupBtn.addEventListener('mousedown', () => deleteCard(card, closePopup, deleteCardPopup));
 }
 
 // Вызовы функции открытия попапов:
