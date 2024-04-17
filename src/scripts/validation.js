@@ -59,7 +59,8 @@ function isValid(formElement, inputElement) {
 }
 
 function setEventListeners(formElement, formConfig) {
-  const { inputSelector, submitButtonSelector, ...validationConfig } = formConfig;
+  const { inputSelector, submitButtonSelector, ...validationConfig } =
+    formConfig;
   const inputList = Array.from(formElement.querySelectorAll(inputSelector));
   const buttonElement = formElement.querySelector(submitButtonSelector);
 
