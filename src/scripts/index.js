@@ -150,11 +150,10 @@ avatarBtn.addEventListener("mousedown", () => {
 // Вызовы функции закрытия попапов:
 popups.forEach((popup) => {
   popup.addEventListener("mousedown", (evt) => {
-    if (evt.target.classList.contains("popup_is-opened")) {
-      closePopup(popup);
-    }
-
-    if (evt.target.classList.contains("popup__close")) {
+    if (
+      evt.target.classList.contains("popup_is-opened") ||
+      evt.target.classList.contains("popup__close")
+    ) {
       closePopup(popup);
     }
   });

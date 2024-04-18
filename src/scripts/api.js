@@ -1,5 +1,3 @@
-import { Promise } from "core-js";
-
 const config = {
   url: "https://nomoreparties.co/v1/wff-cohort-11/",
   headers: {
@@ -8,16 +6,15 @@ const config = {
   },
 };
 
+function handleResponse(data) {
+  if (data.ok) return data.json();
+  return Promise.reject(`Error ${data.status}`);
+}
+
 export function getUsersProfiles() {
   return fetch(`${config.url}users/me`, {
     headers: config.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-
-    return Promise.reject(`Error ${res.status}`);
-  });
+  }).then((res) => handleResponse(res));
 }
 
 export function sendingProfileData(profileName, profileJob) {
@@ -28,19 +25,13 @@ export function sendingProfileData(profileName, profileJob) {
       name: profileName,
       about: profileJob,
     }),
-  });
+  }).then((res) => handleResponse(res));
 }
 
 export function getCards() {
   return fetch(`${config.url}cards`, {
     headers: config.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-
-    return Promise.reject(`Error ${res.status}`);
-  });
+  }).then((res) => handleResponse(res));
 }
 
 export function addNewCard(cardName, cardLink) {
@@ -51,13 +42,7 @@ export function addNewCard(cardName, cardLink) {
       name: cardName,
       link: cardLink,
     }),
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-
-    return Promise.reject(`Error ${res.status}`);
-  });
+  }).then((res) => handleResponse(res));
 }
 
 export function removeCard(cardID) {
@@ -67,39 +52,21 @@ export function removeCard(cardID) {
       authorization: config.headers.authorization,
       "Content-Type": "application/json",
     },
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-
-    return Promise.reject(`Error ${res.status}`);
-  });
+  }).then((res) => handleResponse(res));
 }
 
 export function addLikes(cardID) {
   return fetch(`${config.url}cards/likes/${cardID}`, {
     method: "PUT",
     headers: config.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-
-    return Promise.reject(`Error ${res.status}`);
-  });
+  }).then((res) => handleResponse(res));
 }
 
 export function removeLikes(cardID) {
   return fetch(`${config.url}cards/likes/${cardID}`, {
     method: "DELETE",
     headers: config.headers,
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    }
-
-    return Promise.reject(`Error ${res.status}`);
-  });
+  }).then((res) => handleResponse(res));
 }
 
 export function changeAvatar(usersAvatar) {
@@ -109,5 +76,5 @@ export function changeAvatar(usersAvatar) {
     body: JSON.stringify({
       avatar: usersAvatar,
     }),
-  });
+  }).then((res) => handleResponse(res));
 }

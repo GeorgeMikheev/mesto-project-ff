@@ -10,7 +10,10 @@ export function enableValidation(validationConfig) {
 // Функция добавления класса ошибки:
 function showInputError(formElement, inputElement, errorMassage) {
   const formError = formElement.querySelector(`.${inputElement.id}-error`);
-
+  console.log(
+    inputElement === document.querySelector(".form__input_type_error")
+  );
+  console.log(inputElement);
   inputElement.classList.add("form__input_type_error");
   formError.textContent = errorMassage;
   formError.classList.add("form__input-error_active");
@@ -35,8 +38,7 @@ function toggleButtonState(inputList, buttonElement, validationConfig) {
   const { inactiveButtonClass } = validationConfig;
 
   if (hasInvalidInput(inputList)) {
-    buttonElement.setAttribute("disabled", "");
-    buttonElement.classList.add(inactiveButtonClass);
+    disableSubmitButton(buttonElement, inactiveButtonClass);
   } else {
     buttonElement.removeAttribute("disabled");
     buttonElement.classList.remove(inactiveButtonClass);
@@ -83,6 +85,12 @@ export function clearValidation(formElement, validationConfig) {
     hideInputError(formElement, inputElement);
   });
 
+  disableSubmitButton(buttonElement, validationConfig);
+
   toggleButtonState(inputList, buttonElement, validationConfig);
-  buttonElement.setAttribute("disabled", "");
+}
+
+function disableSubmitButton(button, config) {
+  button.setAttribute("disabled", "");
+  button.classList.add(config.inactiveButtonClass);
 }

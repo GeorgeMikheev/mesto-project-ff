@@ -23,14 +23,16 @@ export function createCard(
   cardImage.id = card._id;
   cardElement.querySelector(".card__title").textContent = card.name;
 
-  if (card.owner._id !== userID) deleteButton.remove();
+  if (card.owner._id !== userID) {
+    deleteButton.remove();
+  } else {
+    deleteButton.addEventListener("mousedown", () =>
+      openeDeletePopupFunc(cardImage)
+    );
+  }
 
   if (card.likes.some((user) => user._id === userID))
     likeBtn.classList.toggle("card__like-button_is-active");
-
-  deleteButton.addEventListener("mousedown", () =>
-    openeDeletePopupFunc(cardImage)
-  );
 
   cardImage.addEventListener("mousedown", () => {
     openImagePopupFunc(card.link, card.name);
@@ -56,16 +58,16 @@ export function likeTheCard(evt) {
   const card = evt.target.closest(".card");
   const cardID = card.querySelector(".card__image").id;
   const likes = card.querySelector(".likes");
+  const likeMethod = evt.target.classList.contains(
+    "card__like-button_is-active"
+  )
+    ? removeLikes
+    : addLikes;
 
-  if (evt.target.classList.contains("card__like-button_is-active")) {
-    removeLikes(cardID).then((res) => {
+  likeMethod(cardID)
+    .then((res) => {
       evt.target.classList.toggle("card__like-button_is-active");
       likes.textContent = res.likes.length;
-    });
-  } else {
-    addLikes(cardID).then((res) => {
-      evt.target.classList.toggle("card__like-button_is-active");
-      likes.textContent = res.likes.length;
-    });
-  }
+    })
+    .catch((err) => console.log(err));
 }
