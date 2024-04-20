@@ -65,21 +65,27 @@ Promise.all(promises)
 function addNewAvatarImg(evt) {
   evt.preventDefault();
   showSaveMessage(avatarForm.querySelector(".popup__button"));
-  changeAvatar(avatarInput.value);
-  avatar.style.backgroundImage = `url('${avatarInput.value}')`;
-  evt.target.reset();
-  closePopup(avatarPopup);
+  changeAvatar(avatarInput.value)
+    .then(() => {
+      avatar.style.backgroundImage = `url('${avatarInput.value}')`;
+      evt.target.reset();
+    })
+    .catch((err) => console.log(err))
+    .finally(() => closePopup(avatarPopup));
 }
 
 // Функция редактирования информации профиля:
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   showSaveMessage(formElement.querySelector(".popup__button"));
-  sendingProfileData(nameInput.value, jobInput.value);
-  profileName.textContent = nameInput.value;
-  profileJob.textContent = jobInput.value;
-  evt.target.reset();
-  closePopup(profileEditPopup);
+  sendingProfileData(nameInput.value, jobInput.value)
+    .then(() => {
+      profileName.textContent = nameInput.value;
+      profileJob.textContent = jobInput.value;
+      evt.target.reset();
+    })
+    .catch(err => console.log(err))
+    .finally(() => closePopup(profileEditPopup));  
 }
 
 // Функция добавления своих карточек:
@@ -114,12 +120,14 @@ function openImagePopup(src, alt) {
 }
 
 // Функци открытия попапа удаления карточки:
+let cardToDelete = '';
+
 function openeDeletePopup(card) {
   openPopup(deleteCardPopup);
-  deleteCardPopupBtn.addEventListener("mousedown", () =>
-    deleteCard(card, closePopup, deleteCardPopup)
-  );
+  cardToDelete = card;
 }
+
+deleteCardPopupBtn.addEventListener("mousedown", () => deleteCard(cardToDelete, closePopup, deleteCardPopup));
 
 // Вызовы функции открытия попапов:
 

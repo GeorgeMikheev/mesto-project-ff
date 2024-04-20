@@ -8,24 +8,20 @@ export function enableValidation(validationConfig) {
 }
 
 // Функция добавления класса ошибки:
-function showInputError(formElement, inputElement, errorMassage) {
+function showInputError(formElement, inputElement, errorMassage, validationConfig) {
   const formError = formElement.querySelector(`.${inputElement.id}-error`);
-  console.log(
-    inputElement === document.querySelector(".form__input_type_error")
-  );
-  console.log(inputElement);
-  inputElement.classList.add("form__input_type_error");
+  inputElement.classList.add(validationConfig.inputErrorClass);
   formError.textContent = errorMassage;
-  formError.classList.add("form__input-error_active");
+  formError.classList.add(validationConfig.errorClass);
 }
 
 // Функция удаления класса ошибки:
-function hideInputError(formElement, inputElement) {
+function hideInputError(formElement, inputElement, validationConfig) {
   const formError = formElement.querySelector(`.${inputElement.id}-error`);
 
-  inputElement.classList.remove("form__input_type_error");
+  inputElement.classList.remove(validationConfig.inputErrorClass);
   formError.textContent = "";
-  formError.classList.remove("form__input-error_active");
+  formError.classList.remove(validationConfig.errorClass);
 }
 
 function hasInvalidInput(inputList) {
@@ -46,7 +42,7 @@ function toggleButtonState(inputList, buttonElement, validationConfig) {
 }
 
 // Функция проверки валидности полей:
-function isValid(formElement, inputElement) {
+function isValid(formElement, inputElement, validationConfig) {
   if (inputElement.validity.patternMismatch) {
     inputElement.setCustomValidity(inputElement.dataset.errorMessage);
   } else {
@@ -54,9 +50,9 @@ function isValid(formElement, inputElement) {
   }
 
   if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage);
+    showInputError(formElement, inputElement, inputElement.validationMessage, validationConfig);
   } else {
-    hideInputError(formElement, inputElement);
+    hideInputError(formElement, inputElement, validationConfig);
   }
 }
 
@@ -70,7 +66,7 @@ function setEventListeners(formElement, formConfig) {
 
   inputList.forEach((inputElement) => {
     inputElement.addEventListener("input", () => {
-      isValid(formElement, inputElement);
+      isValid(formElement, inputElement, validationConfig);
       toggleButtonState(inputList, buttonElement, validationConfig);
     });
   });
@@ -82,7 +78,7 @@ export function clearValidation(formElement, validationConfig) {
   const buttonElement = formElement.querySelector(submitButtonSelector);
 
   inputList.forEach((inputElement) => {
-    hideInputError(formElement, inputElement);
+    hideInputError(formElement, inputElement, validationConfig);
   });
 
   disableSubmitButton(buttonElement, validationConfig);

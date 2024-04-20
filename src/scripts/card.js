@@ -48,9 +48,9 @@ export function deleteCard(card, closePopupFunc, popup) {
   removeCard(card.id)
     .then(() => {
       card.closest(".card").remove();
-      closePopupFunc(popup);
     })
-    .catch((err) => console.log(err));
+    .catch((err) => console.log(err))
+    .finally(() => closePopupFunc(popup));
 }
 
 // функция лайка карточки:

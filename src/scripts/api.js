@@ -18,7 +18,7 @@ export function getUsersProfiles() {
 }
 
 export function sendingProfileData(profileName, profileJob) {
-  fetch(`${config.url}users/me`, {
+  return fetch(`${config.url}users/me`, {
     method: "PATCH",
     headers: config.headers,
     body: JSON.stringify({
