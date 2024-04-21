@@ -66,8 +66,8 @@ function addNewAvatarImg(evt) {
   evt.preventDefault();
   showSaveMessage(avatarForm.querySelector(".popup__button"));
   changeAvatar(avatarInput.value)
-    .then(() => {
-      avatar.style.backgroundImage = `url('${avatarInput.value}')`;
+    .then((res) => {
+      avatar.style.backgroundImage = `url('${res.avatar}')`;
       evt.target.reset();
     })
     .catch((err) => console.log(err))
@@ -79,13 +79,13 @@ function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   showSaveMessage(formElement.querySelector(".popup__button"));
   sendingProfileData(nameInput.value, jobInput.value)
-    .then(() => {
-      profileName.textContent = nameInput.value;
-      profileJob.textContent = jobInput.value;
+    .then((res) => {
+      profileName.textContent = res.name;
+      profileJob.textContent = res.about;
       evt.target.reset();
     })
-    .catch(err => console.log(err))
-    .finally(() => closePopup(profileEditPopup));  
+    .catch((err) => console.log(err))
+    .finally(() => closePopup(profileEditPopup));
 }
 
 // Функция добавления своих карточек:
@@ -120,14 +120,16 @@ function openImagePopup(src, alt) {
 }
 
 // Функци открытия попапа удаления карточки:
-let cardToDelete = '';
+let cardToDelete = "";
 
 function openeDeletePopup(card) {
   openPopup(deleteCardPopup);
   cardToDelete = card;
 }
 
-deleteCardPopupBtn.addEventListener("mousedown", () => deleteCard(cardToDelete, closePopup, deleteCardPopup));
+deleteCardPopupBtn.addEventListener("mousedown", () =>
+  deleteCard(cardToDelete, closePopup, deleteCardPopup)
+);
 
 // Вызовы функции открытия попапов:
 

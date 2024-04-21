@@ -8,7 +8,12 @@ export function enableValidation(validationConfig) {
 }
 
 // Функция добавления класса ошибки:
-function showInputError(formElement, inputElement, errorMassage, validationConfig) {
+function showInputError(
+  formElement,
+  inputElement,
+  errorMassage,
+  validationConfig
+) {
   const formError = formElement.querySelector(`.${inputElement.id}-error`);
   inputElement.classList.add(validationConfig.inputErrorClass);
   formError.textContent = errorMassage;
@@ -50,7 +55,12 @@ function isValid(formElement, inputElement, validationConfig) {
   }
 
   if (!inputElement.validity.valid) {
-    showInputError(formElement, inputElement, inputElement.validationMessage, validationConfig);
+    showInputError(
+      formElement,
+      inputElement,
+      inputElement.validationMessage,
+      validationConfig
+    );
   } else {
     hideInputError(formElement, inputElement, validationConfig);
   }
@@ -82,8 +92,6 @@ export function clearValidation(formElement, validationConfig) {
   });
 
   disableSubmitButton(buttonElement, validationConfig);
-
-  toggleButtonState(inputList, buttonElement, validationConfig);
 }
 
 function disableSubmitButton(button, config) {
